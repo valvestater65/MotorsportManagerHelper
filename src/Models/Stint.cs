@@ -11,5 +11,7 @@ namespace MotorsportManagerHelper.src.Models
         public Compound Tyre { get; set; }
         public double Fuel { get; set; }
         public double PitTime { get; set; }
+        public double StintTime { get; set; }
+
     }
 }

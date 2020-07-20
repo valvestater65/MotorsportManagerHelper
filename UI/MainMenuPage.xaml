@@ -1,0 +1,62 @@
+﻿<Page x:Class="MotorsportManagerHelper.UI.MainMenuPage"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MotorsportManagerHelper.UI"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainMenuPage">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <mah:Tile Title="Season"
+                   Margin="3"
+                   Background="Crimson"
+                   HorizontalTitleAlignment="Right"
+                      Grid.Column="0" Grid.Row="0"
+                          Command="{Binding OpenSeason}">
+                    <iconPacks:PackIconModern Width="40"
+                                  Height="40"
+                                  Kind="Email" />
+                </mah:Tile>
+                <mah:Tile Title="Drivers"
+                   Margin="3"
+                   Background="Black"
+                   HorizontalTitleAlignment="Right"
+                      Grid.Column="1" Grid.Row="0">
+                    <iconPacks:PackIconMaterial Kind="CardAccountDetailsOutline" Width="50" Height="100"/>
+                </mah:Tile>
+                <mah:Tile Title="Car"
+                   Margin="3"
+                   Background="DarkGoldenrod"
+                   HorizontalTitleAlignment="Right"
+                      Grid.Column="3" Grid.Row="0">
+                    <iconPacks:PackIconMaterial Kind="CarCog" Width="50" Height="100"/>
+                </mah:Tile>
+                <mah:Tile Title="Strategy"
+                   Margin="3"
+                   Background="DarkGreen"
+                   HorizontalTitleAlignment="Right"
+                      Grid.Column="0" Grid.Row="1"
+                      Width="300"
+                          Command="{Binding OpenStrategy}">
+                    <iconPacks:PackIconMaterial Kind="Strategy" Width="50" Height="100"/>
+                </mah:Tile>
+            </Grid>
+        </Grid>
+</Page>

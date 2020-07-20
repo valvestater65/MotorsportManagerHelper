@@ -11,5 +11,12 @@ namespace MotorsportManagerHelper.src.Models
         public ObservableCollection<Race> Races { get; set; }
         public ObservableCollection<Driver> Drivers { get; set; }
         public Car Car { get; set; }
+
+
+        public Season()
+        {
+            Races = new ObservableCollection<Race>();
+            Drivers = new ObservableCollection<Driver>();
+        }
     }
 }

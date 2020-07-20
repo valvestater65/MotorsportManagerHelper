@@ -10,95 +10,187 @@ namespace MotorsportManagerHelper.ViewModels
 {
     public class StrategyViewModel : BaseViewModel
     {
-        private ObservableCollection<Stint> calculatedStints;
+        private Season currentSeason;
+        private ObservableCollection<DriverStints> calculatedStints;
         private Session raceSession;
         private ObservableCollection<Compound> sessionCompounds;
 
-        public ObservableCollection<Stint> CalculatedStints { get => calculatedStints; set { calculatedStints = value; OnPropertyChanged(); } }
+        public ObservableCollection<DriverStints> CalculatedStints { get => calculatedStints; set { calculatedStints = value; OnPropertyChanged(); } }
         public Session RaceSession { get => raceSession; set { raceSession = value; OnPropertyChanged(); } }
+        public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<Compound> SessionCompounds { get => sessionCompounds; set { sessionCompounds = value; OnPropertyChanged(); } }
 
 
         public StrategyViewModel()
         {
-            CalculatedStints = new ObservableCollection<Stint>();
+            CalculatedStints = new ObservableCollection<DriverStints>();
             SessionCompounds = new ObservableCollection<Compound>();
             RaceSession = new Session();
+            InitializeDemoData();
+
         }
 
+
+        private void InitializeDemoData()
+        {
+            CalculatedStints.Add(new DriverStints { 
+                Driver = new Driver { 
+                    Id = Guid.NewGuid(),
+                    Name = "TestDriver"
+                },
+                Stints = new ObservableCollection<Stint> { 
+                    new Stint{ 
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound { 
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\Hard.png"
+                        }
+                    },
+                    new Stint{
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound {
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\SuperSoft.png"
+                        }
+                    },
+                    new Stint{
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound {
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\Soft.png"
+                        }
+                    }
+                }
+            });
+
+
+            CalculatedStints.Add(new DriverStints
+            {
+                Driver = new Driver
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "TestDriver 2"
+                },
+                Stints = new ObservableCollection<Stint> {
+                    new Stint{
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound {
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\Hard.png"
+                        }
+                    },
+                    new Stint{
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound {
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\SuperSoft.png"
+                        }
+                    },
+                    new Stint{
+                        Laps = 10,
+                        Fuel = 10,
+                        Tyre = new Compound {
+                            MaxLaps = 10,
+                            Thumbnail = @"C:\Users\valve\source\repos\MotorsportManagerHelper\media\Soft.png"
+                        }
+                    }
+                }
+            });
+
+
+
+
+
+
+
+
+
+        }
 
         public void GenerateStints()
         {
-            //Usually compounds with less Max Laps are the fastest. 
-            //Assumption is one stint per compound. 
-            //We try to generate stints with the fastest compounds possible. 
-            var remainingLaps = raceSession.Laps;
-            foreach (var tyreSet in SessionCompounds.OrderBy(x => x.MaxLaps))
+            
+            foreach (var driver in currentSeason.Drivers)
             {
-                if (remainingLaps == 0)
-                    break;
-
-                var newStint = new Stint
+                var driverStints = new DriverStints();
+                driverStints.Driver = driver;
+                //Usually compounds with less Max Laps are the fastest. 
+                //Assumption is one stint per compound. 
+                //We try to generate stints with the fastest compounds possible. 
+                var remainingLaps = raceSession.Laps;
+                foreach (var tyreSet in SessionCompounds.OrderBy(x => x.MaxLaps))
                 {
-                    Tyre = tyreSet,
-                    Laps = tyreSet.MaxLaps,
-                    Id = Guid.NewGuid(),
-                    Fuel = RaceSession.FuelPerLap * tyreSet.MaxLaps
-                };
+                    if (remainingLaps == 0)
+                        break;
 
-                CalculatedStints.Add(newStint);
+                    var newStint = new Stint
+                    {
+                        Tyre = tyreSet,
+                        Laps = tyreSet.MaxLaps,
+                        Id = Guid.NewGuid(),
+                        Fuel = RaceSession.FuelPerLap * tyreSet.MaxLaps
+                    };
 
-                remainingLaps -= tyreSet.MaxLaps;
-            }
-        }
-
-        public void AddStint(Stint newStint)
-        {
-            try
-            {
-                if (CalculatedStints != null)
-                {
-                    CalculatedStints.Add(newStint);
+                    remainingLaps -= tyreSet.MaxLaps;
+                    driverStints.Stints.Add(newStint);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print($"Create Stint failed: {ex.Message}");
-                throw;
+
+                CalculatedStints.Add(driverStints);
             }
         }
 
-        public void CreateStint()
-        {
-            try
-            {
-                if (CalculatedStints != null)
-                {
-                    CalculatedStints.Add(new Stint());
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print($"Add Stint failed: {ex.Message}");
-                throw;
-            }
-        }
-        public bool RemoveStint(Guid stintId)
-        {
-            try
-            {
-                if (CalculatedStints != null)
-                {
-                    return CalculatedStints.Remove(CalculatedStints.Where(x => x.Id == stintId).FirstOrDefault());
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Debug.Print($"RemoveStint Failed: {ex.Message}");
-                return false;
-            }
-        }
+        //public void AddStint(Stint newStint)
+        //{
+        //    try
+        //    {
+        //        if (CalculatedStints != null)
+        //        {
+        //            CalculatedStints.Add(newStint);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.Print($"Create Stint failed: {ex.Message}");
+        //        throw;
+        //    }
+        //}
+
+        //public void CreateStint()
+        //{
+        //    try
+        //    {
+        //        if (CalculatedStints != null)
+        //        {
+        //            CalculatedStints.Add(new Stint());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.Print($"Add Stint failed: {ex.Message}");
+        //        throw;
+        //    }
+        //}
+        //public bool RemoveStint(Guid stintId)
+        //{
+        //    try
+        //    {
+        //        if (CalculatedStints != null)
+        //        {
+        //            return CalculatedStints.Remove(CalculatedStints.Where(x => x.Id == stintId).FirstOrDefault());
+        //        }
+        //        return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.Print($"RemoveStint Failed: {ex.Message}");
+        //        return false;
+        //    }
+        //}
 
 
 
