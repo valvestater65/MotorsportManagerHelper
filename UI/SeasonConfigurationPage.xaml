@@ -14,31 +14,50 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
                 <Label Content="Season Category:"/>
-                <ComboBox ItemsSource="{Binding CategoryTypes}" SelectedValue="{Binding CurrentSeason.Category}" />
+                <ComboBox ItemsSource="{Binding CategoryTypes}" SelectedValue="{Binding CurrentSeason.Category}" Width="150" />
+                <Button Margin="5,0,0,0">Save</Button>
+                <Button Margin="5,0,0,0">Clear</Button>
             </StackPanel>
         </DockPanel>
         <DockPanel Grid.Row="1">
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" Margin="5,5,5,5">
                 <Label Content="Races"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
-                        <Label Content="Select Race"/>
-                        <ComboBox ItemsSource="{Binding AvailableTracks}">
-                            <ItemsControl>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Content="{Binding Name}"/>
-                                            <Label Content="-"/>
-                                            <Label Content="{Binding Layout}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ComboBox>
-                        
+                        <Label Content="Set Races" Margin="5,5,5,5"/>
+                        <ListView x:Name="lstvExistingRaces" ItemsSource="{Binding AvailableTracks}" SelectedItem="{Binding CurrentSelectedTrack}" Margin="5,5,5,5">
+                            <ListView.View>
+                                <GridView AllowsColumnReorder="false">
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Track" Width="100"/>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=Layout}" Header="Layout" Width="60"/>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Add to Season" Command="{Binding AddSeasonRace}" />
+                                    <MenuItem Header="Create Race"/>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Season Races" Margin="5,5,5,5"/>
+                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentSeason.Races}" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Race" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Track" Binding="{Binding Track.Name}"/>
+                                <DataGridTextColumn Header="Laps" Binding="{Binding RaceLaps}" />
+                                <DataGridTemplateColumn Header="Race Date">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDateFormat="Short" SelectedDate="{Binding RaceDate}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

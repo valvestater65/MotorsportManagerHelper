@@ -1,7 +1,9 @@
 ﻿using MotorsportManagerHelper.src.Models;
+using MotorsportManagerHelper.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace MotorsportManagerHelper.ViewModels
@@ -11,23 +13,31 @@ namespace MotorsportManagerHelper.ViewModels
         private Season currentSeason;
         private ObservableCollection<string> categoryTypes;
         private ObservableCollection<Track> availableTracks;
+        private Track currentSelectedTrack;
+        private ParameterLessCommand addSeasonRace;
 
         public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<string> CategoryTypes { get => categoryTypes; set { categoryTypes = value; OnPropertyChanged(); } }
         public ObservableCollection<Track> AvailableTracks { get => availableTracks; set { availableTracks = value; OnPropertyChanged(); } }
+        public Track CurrentSelectedTrack { get => currentSelectedTrack; set { currentSelectedTrack = value; OnPropertyChanged(); } }
+        public ParameterLessCommand AddSeasonRace { get => addSeasonRace; set { addSeasonRace = value; OnPropertyChanged(); } }
 
         public SeasonViewModel()
         {
             CurrentSeason = new Season();
             InitializeCategories();
             InitializeRaces();
+            SetCommands();
         }
 
-        public SeasonViewModel(Season currentSeason)
+        public SeasonViewModel(Season currentSeason):this()
         {
             CurrentSeason = currentSeason;
-            InitializeCategories();
-            InitializeRaces();
+        }
+
+        private void SetCommands()
+        {
+            AddSeasonRace = new ParameterLessCommand(AddRaceToSeason);
         }
 
         private void InitializeCategories()
@@ -39,7 +49,6 @@ namespace MotorsportManagerHelper.ViewModels
                 "Formula",
                 "Formula World Champ"
             };
-           
         }
 
         private void InitializeRaces()
@@ -69,6 +78,18 @@ namespace MotorsportManagerHelper.ViewModels
             };
         }
 
+        private void AddRaceToSeason()
+        {
+            var race = new Race {
+                Id = Guid.NewGuid(),
+                Name = $"{CurrentSelectedTrack.Name} - {CurrentSelectedTrack.Layout}",
+                Track = CurrentSelectedTrack,
+                RaceDate = DateTime.UtcNow
+            };
+
+            CurrentSeason.Races.Add(race);
+
+        }
 
     }
 }
