@@ -19,16 +19,22 @@ namespace MotorsportManagerHelper.src.Services
         {
             _currentSavePath = currentSavePath;
             _fileService = new FileService(currentSavePath);
+            CheckSaveDirectory();
         }
 
         public Season CurrentSeason {
-            get {
-                if (_currentSeason == null)
-                    return new Season();
-                return _currentSeason;
-            }
+            get => _currentSeason;
+            set => _currentSeason = value; 
+        }
 
-            private set => _currentSeason = value; 
+        public Season CreateNewSeason()
+        {
+            CurrentSeason = new Season
+            {
+                Id = Guid.NewGuid()
+            };
+
+            return CurrentSeason;
         }
 
         public List<Race> GetSeasonRaces()
@@ -61,7 +67,10 @@ namespace MotorsportManagerHelper.src.Services
 
         public void SaveSeason()
         {
-            if (string.IsNullOrEmpty(_seasonFileName))
+            if (CurrentSeason.Id == Guid.Empty)
+                CurrentSeason.Id = Guid.NewGuid();
+
+            if (!string.IsNullOrEmpty(_seasonFileName))
             {
                 _fileService.SaveSeason(CurrentSeason, _seasonFileName);
             }
@@ -70,5 +79,17 @@ namespace MotorsportManagerHelper.src.Services
                 _seasonFileName = _fileService.SaveSeason(CurrentSeason);
             }
         }
+
+        public bool PreviousSeasonExists()
+        {
+            return _fileService.GetSaveFiles().Count > 0;
+        }
+
+        private void CheckSaveDirectory()
+        {
+            if (!_fileService.SaveDirExists)
+                _fileService.CreateSavesDir();
+        }
+
     }
 }

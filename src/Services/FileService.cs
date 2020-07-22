@@ -23,6 +23,12 @@ namespace MotorsportManagerHelper.src.Services
             set => _saveFilesPath = value;
         }
 
+        public bool SaveDirExists {
+            get {
+                return Directory.Exists(_saveFilesPath);
+            }
+        }
+
 
         public FileService(string filesPath)
         {
@@ -76,6 +82,16 @@ namespace MotorsportManagerHelper.src.Services
             return (saveFilePath,returnSeason);
         }
 
+
+        public bool CreateSavesDir()
+        {
+            if (!Directory.Exists(_saveFilesPath))
+            {
+                Directory.CreateDirectory(_saveFilesPath);
+            }
+
+            return true;
+        }
 
 
 

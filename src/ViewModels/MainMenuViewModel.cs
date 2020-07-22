@@ -12,28 +12,29 @@ namespace MotorsportManagerHelper.src.ViewModels
     public class MainMenuViewModel : BaseViewModel
     {
         private NavigationService navigation;
-        private RelayCommand<Season> openStrategy;
-        private RelayCommand<Season> openSeason;
+        private ApplicationService sessionManager;
+        private ParameterLessCommand openStrategy;
+        private ParameterLessCommand openSeason;
         
-        public RelayCommand<Season> OpenStrategy { get => openStrategy; set { openStrategy = value; OnPropertyChanged(); } }
-        public RelayCommand<Season> OpenSeason { get => openSeason; set { openSeason = value; OnPropertyChanged(); } }
+        public ParameterLessCommand OpenStrategy { get => openStrategy; set { openStrategy = value; OnPropertyChanged(); } }
+        public ParameterLessCommand OpenSeason { get => openSeason; set { openSeason = value; OnPropertyChanged(); } }
 
-        public MainMenuViewModel(NavigationService navigation)
+        public MainMenuViewModel(ApplicationService sessionManager)
         {
-            this.navigation = navigation;
-            OpenStrategy = new RelayCommand<Season>(OpenStrategyScreen);
-            OpenSeason = new RelayCommand<Season>(OpenSeasonScreen);
+            this.sessionManager = sessionManager;
+            this.navigation = sessionManager.Navigation;
+            OpenStrategy = new ParameterLessCommand(OpenStrategyScreen);
+            OpenSeason = new ParameterLessCommand(OpenSeasonScreen);
         }
 
 
-        private void OpenStrategyScreen(Season currentSeason)
+        private void OpenStrategyScreen()
         {
             var strategyVm = new StrategyViewModel();
-            strategyVm.CurrentSeason = currentSeason;
             navigation.CurrentFrame.Navigate(new StrategyPage(strategyVm));
         }
 
-        private void OpenSeasonScreen(Season currentSeason)
+        private void OpenSeasonScreen()
         {
             var seasonConfVM = new SeasonViewModel();
             navigation.CurrentFrame.Navigate(new SeasonConfigurationPage(seasonConfVM));

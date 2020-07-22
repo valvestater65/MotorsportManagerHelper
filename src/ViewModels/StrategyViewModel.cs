@@ -30,6 +30,11 @@ namespace MotorsportManagerHelper.src.ViewModels
 
         }
 
+        private void ValidateSeasonLoaded()
+        { 
+
+        }
+
 
         private void InitializeDemoData()
         {

@@ -9,8 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-
-
+using MotorsportManagerHelper.src.Services.Helpers;
 
 namespace MotorsportManagerHelper
 {
@@ -29,11 +28,12 @@ namespace MotorsportManagerHelper
             mainWindow.Show();
 
             navigation = new NavigationService(mainWindow.mainAppFrame);
-            MainMenuViewModel mmVm = new MainMenuViewModel(navigation);
+            seasonManager = new SeasonManagerService(DefaultSettings.SaveDirectory);
 
             applicationService.Navigation = navigation;
             applicationService.SeasonManager = seasonManager;
 
+            MainMenuViewModel mmVm = new MainMenuViewModel(applicationService);
             mainWindow.mainAppFrame.Navigate(new MainMenuPage(mmVm));
 
         }

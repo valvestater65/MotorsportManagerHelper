@@ -6,7 +6,7 @@ namespace MotorsportManagerHelper.src.Services
 {
     public sealed class ApplicationService
     {
-        private static ApplicationService instance;
+        private static ApplicationService instance = null;
         private static readonly object deadlock = new object();
         public NavigationService Navigation { get; set; }
         public SeasonManagerService SeasonManager { get; set; }
@@ -22,7 +22,7 @@ namespace MotorsportManagerHelper.src.Services
             get {
                 lock (deadlock)
                 if (instance == null)
-                    return new ApplicationService();
+                      instance= new ApplicationService();
                 return instance;
             }
         }
