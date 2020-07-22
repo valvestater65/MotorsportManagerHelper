@@ -1,12 +1,12 @@
 ﻿using MotorsportManagerHelper.src.Models;
-using MotorsportManagerHelper.ViewModels.Commands;
+using MotorsportManagerHelper.src.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 
-namespace MotorsportManagerHelper.ViewModels
+namespace MotorsportManagerHelper.src.ViewModels
 {
     public class SeasonViewModel : BaseViewModel
     {

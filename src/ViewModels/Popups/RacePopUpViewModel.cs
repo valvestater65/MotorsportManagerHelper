@@ -1,5 +1,6 @@
 ﻿using MotorsportManagerHelper.src.Models;
-using MotorsportManagerHelper.ViewModels.Commands;
+using MotorsportManagerHelper.src.ViewModels;
+using MotorsportManagerHelper.src.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

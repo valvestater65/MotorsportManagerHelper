@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Controls;
 
-namespace MotorsportManagerHelper.Services
+namespace MotorsportManagerHelper.src.Services
 {
     public class NavigationService 
     {

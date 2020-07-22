@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace MotorsportManagerHelper.ViewModels.Commands
+namespace MotorsportManagerHelper.src.ViewModels.Commands
 {
     public class RelayCommand <T> : ICommand
         where T : new()

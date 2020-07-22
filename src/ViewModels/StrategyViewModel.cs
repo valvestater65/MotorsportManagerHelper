@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace MotorsportManagerHelper.ViewModels
+namespace MotorsportManagerHelper.src.ViewModels
 {
     public class StrategyViewModel : BaseViewModel
     {

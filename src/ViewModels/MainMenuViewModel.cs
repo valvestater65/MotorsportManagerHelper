@@ -1,13 +1,13 @@
-﻿using MotorsportManagerHelper.Services;
+﻿using MotorsportManagerHelper.src.Services;
 using MotorsportManagerHelper.src.Models;
 using MotorsportManagerHelper.UI;
-using MotorsportManagerHelper.ViewModels.Commands;
+using MotorsportManagerHelper.src.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Data;
 
-namespace MotorsportManagerHelper.ViewModels
+namespace MotorsportManagerHelper.src.ViewModels
 {
     public class MainMenuViewModel : BaseViewModel
     {

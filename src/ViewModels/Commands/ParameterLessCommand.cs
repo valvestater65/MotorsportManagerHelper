@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
-namespace MotorsportManagerHelper.ViewModels.Commands
+namespace MotorsportManagerHelper.src.ViewModels.Commands
 {
     public class ParameterLessCommand : ICommand
     {

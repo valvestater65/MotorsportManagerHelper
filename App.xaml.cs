@@ -1,6 +1,6 @@
-﻿using MotorsportManagerHelper.Services;
+﻿using MotorsportManagerHelper.src.Services;
 using MotorsportManagerHelper.UI;
-using MotorsportManagerHelper.ViewModels;
+using MotorsportManagerHelper.src.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,7 +19,10 @@ namespace MotorsportManagerHelper
     /// </summary>
     public partial class App : Application
     {
+
+        public static ApplicationService applicationService = ApplicationService.Instance;
         public static NavigationService navigation;
+        public static SeasonManagerService seasonManager;
         protected override void OnStartup(StartupEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
@@ -27,6 +30,10 @@ namespace MotorsportManagerHelper
 
             navigation = new NavigationService(mainWindow.mainAppFrame);
             MainMenuViewModel mmVm = new MainMenuViewModel(navigation);
+
+            applicationService.Navigation = navigation;
+            applicationService.SeasonManager = seasonManager;
+
             mainWindow.mainAppFrame.Navigate(new MainMenuPage(mmVm));
 
         }
