@@ -1,10 +1,11 @@
-﻿using MahApps.Metro.Converters;
-using MotorsportManagerHelper.src.Services.Interfaces;
-using MotorsportManagerHelper.src.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MotorsportManagerHelper.src.Services.Interfaces;
+using MotorsportManagerHelper.src.Models;
+using MotorsportManagerHelper.src.Services.Files;
+
 
 namespace MotorsportManagerHelper.src.Services
 {
@@ -18,7 +19,7 @@ namespace MotorsportManagerHelper.src.Services
         public SeasonManagerService(string currentSavePath)
         {
             _currentSavePath = currentSavePath;
-            _fileService = new FileService(currentSavePath);
+            _fileService = new SeasonFileService(currentSavePath);
             CheckSaveDirectory();
         }
 

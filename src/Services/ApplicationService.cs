@@ -10,6 +10,7 @@ namespace MotorsportManagerHelper.src.Services
         private static readonly object deadlock = new object();
         public NavigationService Navigation { get; set; }
         public SeasonManagerService SeasonManager { get; set; }
+        public DataService FixedDataService { get; set; }
 
 
         public ApplicationService()

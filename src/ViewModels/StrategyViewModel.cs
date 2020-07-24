@@ -1,4 +1,5 @@
 ﻿using MotorsportManagerHelper.src.Models;
+using MotorsportManagerHelper.src.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +15,8 @@ namespace MotorsportManagerHelper.src.ViewModels
         private ObservableCollection<DriverStints> calculatedStints;
         private Session raceSession;
         private ObservableCollection<Compound> sessionCompounds;
+        private ApplicationService sessionMgr;
+        private DataService _fixDataService; 
 
         public ObservableCollection<DriverStints> CalculatedStints { get => calculatedStints; set { calculatedStints = value; OnPropertyChanged(); } }
         public Session RaceSession { get => raceSession; set { raceSession = value; OnPropertyChanged(); } }
@@ -26,13 +29,23 @@ namespace MotorsportManagerHelper.src.ViewModels
             CalculatedStints = new ObservableCollection<DriverStints>();
             SessionCompounds = new ObservableCollection<Compound>();
             RaceSession = new Session();
+            sessionMgr = ApplicationService.Instance;
+            _fixDataService = sessionMgr.FixedDataService;
             InitializeDemoData();
+            ValidateSeasonLoaded();
 
         }
 
         private void ValidateSeasonLoaded()
-        { 
-
+        {
+            if (sessionMgr.SeasonManager.CurrentSeason == null)
+            {
+                //No season loaded require user to load one. 
+            }
+            else
+            {
+                CurrentSeason = sessionMgr.SeasonManager.CurrentSeason;
+            }
         }
 
 
@@ -106,15 +119,6 @@ namespace MotorsportManagerHelper.src.ViewModels
                     }
                 }
             });
-
-
-
-
-
-
-
-
-
         }
 
         public void GenerateStints()

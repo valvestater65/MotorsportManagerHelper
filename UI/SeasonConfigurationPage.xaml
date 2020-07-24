@@ -28,11 +28,10 @@
             </StackPanel>
         </DockPanel>
         <DockPanel Grid.Row="1">
-            <StackPanel Orientation="Vertical" Margin="5,5,5,5">
-                <Label Content="Races"/>
+            <StackPanel Orientation="Vertical" Margin="5,5,5,5" DockPanel.Dock="Left">
+                <Label Content="Avilable Races"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
-                        <Label Content="Set Races" Margin="5,5,5,5"/>
                         <ListView x:Name="lstvExistingRaces" ItemsSource="{Binding AvailableTracks}" SelectedItem="{Binding CurrentSelectedTrack}" Margin="5,5,5,5">
                             <ListView.View>
                                 <GridView AllowsColumnReorder="false">
@@ -48,41 +47,41 @@
                             </ListView.ContextMenu>
                         </ListView>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Season Races" Margin="5,5,5,5"/>
-                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentSeason.Races}" CanUserAddRows="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Race" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Track" Binding="{Binding Track.Name}"/>
-                                <DataGridTextColumn Header="Laps" Binding="{Binding RaceLaps}" />
-                                <DataGridTemplateColumn Header="Race Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePicker SelectedDateFormat="Short" SelectedDate="{Binding RaceDate}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <Popup Visibility="{Binding LoadLastSessionVisible, Converter={StaticResource visibilityConverter}}" IsOpen="{Binding LoadLastSessionVisible}" PopupAnimation="Slide" Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}">
-                <Grid Background="AntiqueWhite">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="Warning" HorizontalContentAlignment="Center"/>
-                    <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,15,15,15">
-                        <TextBlock>A previous Season is detected, would you like to load it?</TextBlock>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,15,15,15">
-                            <Button Command="{Binding LoadLastSession}">Yes</Button>
-                            <Button Command="{Binding HidePops}">No</Button>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </Popup>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                <Label Content="Season Races" Margin="5,5,5,5"/>
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentSeason.Races}" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Race" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Track" Binding="{Binding Track.Name}"/>
+                        <DataGridTextColumn Header="Laps" Binding="{Binding RaceLaps}" />
+                        <DataGridTemplateColumn Header="Race Date">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DatePicker SelectedDateFormat="Short" SelectedDate="{Binding RaceDate}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </DockPanel>
+        <Popup Visibility="{Binding LoadLastSessionVisible, Converter={StaticResource visibilityConverter}}" IsOpen="{Binding LoadLastSessionVisible}" PopupAnimation="Slide" Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}">
+            <Grid Background="AntiqueWhite">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Warning" HorizontalContentAlignment="Center"/>
+                <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,15,15,15">
+                    <TextBlock>A previous Season is detected, would you like to load it?</TextBlock>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,15,15,15">
+                        <Button Command="{Binding LoadLastSession}">Yes</Button>
+                        <Button Command="{Binding HidePops}">No</Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Popup>
     </Grid>
 </Page>

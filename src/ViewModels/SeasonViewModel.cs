@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MotorsportManagerHelper.src.ViewModels
@@ -14,9 +15,12 @@ namespace MotorsportManagerHelper.src.ViewModels
         private Season currentSeason;
         private ObservableCollection<string> categoryTypes;
         private ObservableCollection<Track> availableTracks;
+        private ObservableCollection<Race> dataRaces;
         private Track currentSelectedTrack;
         private bool _loadLastSessionVisible;
+        private bool _showRaceEditor;
         private ApplicationService _currentSession;
+        private Race _newAddedRace;
 
         private ParameterLessCommand addSeasonRace;
         private ParameterLessCommand _loadLastSession;
@@ -33,6 +37,9 @@ namespace MotorsportManagerHelper.src.ViewModels
         public ParameterLessCommand LoadLastSession { get => _loadLastSession; set { _loadLastSession = value; OnPropertyChanged(); } }
         public ParameterLessCommand HidePops { get => _hidePops; set { _hidePops = value; OnPropertyChanged(); } }
         public ParameterLessCommand SaveCurrentSeason { get => _saveSession; set { _saveSession = value; OnPropertyChanged(); } }
+        public ObservableCollection<Race> DataRaces { get => dataRaces; set { dataRaces = value; OnPropertyChanged(); } }
+        public bool ShowRaceEditor { get => _showRaceEditor; set { _showRaceEditor = value; OnPropertyChanged(); } }
+        public Race NewAddedRace { get => _newAddedRace; set { _newAddedRace = value; OnPropertyChanged(); } }
 
         public SeasonViewModel()
         {
@@ -40,6 +47,7 @@ namespace MotorsportManagerHelper.src.ViewModels
             LoadLastSession = new ParameterLessCommand(LoadLastSavedSession);
             HidePops = new ParameterLessCommand(ClosePopup);
             SaveCurrentSeason = new ParameterLessCommand(SaveSeason);
+            ShowRaceEditor = false;
             InitializeCategories();
             InitializeRaces();
             SetCommands();
@@ -136,6 +144,18 @@ namespace MotorsportManagerHelper.src.ViewModels
             CurrentSeason.Races.Add(race);
 
         }
+
+        private void OpenRaceEditor()
+        {
+            ShowRaceEditor = true;
+        }
+
+        private void SaveRace()
+        { 
+
+        }
+
+
 
         private void SaveSeason()
         {

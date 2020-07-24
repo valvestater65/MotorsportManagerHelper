@@ -20,18 +20,14 @@ namespace MotorsportManagerHelper
     {
 
         public static ApplicationService applicationService = ApplicationService.Instance;
-        public static NavigationService navigation;
-        public static SeasonManagerService seasonManager;
         protected override void OnStartup(StartupEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
 
-            navigation = new NavigationService(mainWindow.mainAppFrame);
-            seasonManager = new SeasonManagerService(DefaultSettings.SaveDirectory);
-
-            applicationService.Navigation = navigation;
-            applicationService.SeasonManager = seasonManager;
+            applicationService.Navigation = new NavigationService(mainWindow.mainAppFrame);
+            applicationService.SeasonManager = new SeasonManagerService(DefaultSettings.SaveDirectory);
+            applicationService.FixedDataService = new DataService();
 
             MainMenuViewModel mmVm = new MainMenuViewModel(applicationService);
             mainWindow.mainAppFrame.Navigate(new MainMenuPage(mmVm));

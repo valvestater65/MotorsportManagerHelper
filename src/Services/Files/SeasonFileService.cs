@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace MotorsportManagerHelper.src.Services
+namespace MotorsportManagerHelper.src.Services.Files
 {
-    public class FileService : IFileService
+    public class SeasonFileService : IFileService
     {
         private string _saveFilesPath;
         public string SaveFilesPath
@@ -30,7 +30,7 @@ namespace MotorsportManagerHelper.src.Services
         }
 
 
-        public FileService(string filesPath)
+        public SeasonFileService(string filesPath)
         {
             SaveFilesPath = filesPath;
         }
