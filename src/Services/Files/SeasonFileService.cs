@@ -58,7 +58,7 @@ namespace MotorsportManagerHelper.src.Services.Files
 
         public (string fileName, Season season) LoadLastSeason()
         {
-            var lastFile = new DirectoryInfo(SaveFilesPath).GetFiles().OrderBy(x => x.LastWriteTime).First();
+            var lastFile = new DirectoryInfo(SaveFilesPath).GetFiles().OrderByDescending(x => x.LastWriteTime).First();
             return LoadSeason(lastFile.FullName);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.CodeDom;
 using System.IO;
 using System.Linq;
@@ -30,16 +31,25 @@ namespace MotorsportManagerHelper.src.Services.Files
         {
             var lastFile = GetLastFile(directoryPath, pattern);
 
-            return lastFile.Name ?? "";
+            return lastFile?.Name ?? "";
         }
 
 
         public T GetLastSavedData(string directoryPath, string pattern)
         {
-            var lastFile = GetLastFile(directoryPath, pattern);
+            try
+            {
+                var lastFile = GetLastFile(directoryPath, pattern);
 
-            return GetData(lastFile.FullName);
+                if (lastFile == null)
+                    throw new Exception("No files found");
 
+                return GetData(lastFile.FullName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void SaveData(string filePath, T data)
