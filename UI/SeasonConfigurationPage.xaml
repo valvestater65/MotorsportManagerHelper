@@ -18,8 +18,10 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
             <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
-                <Label Content="Season Category:"/>
+                <Label Content="Season Category: "/>
                 <ComboBox ItemsSource="{Binding CategoryTypes}" SelectedValue="{Binding CurrentSeason.Category}" Width="150" />
+                <Label Content="Season Year: "/>
+                <TextBox Text="{Binding CurrentSeason.Year}" Width="100"/>
                 <Button Margin="5,0,0,0"
                         Command="{Binding SaveCurrentSeason}"
                         >Save</Button>
@@ -55,15 +57,15 @@
                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentSeason.Races}" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Race" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Track" Binding="{Binding Track.Name}"/>
+                        <DataGridTextColumn Header="Track">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat=" {0} - {1} ">
+                                    <Binding Path="Track.Name"/>
+                                    <Binding Path="Track.Layout"/>
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
                         <DataGridTextColumn Header="Laps" Binding="{Binding RaceLaps}" />
-                        <DataGridTemplateColumn Header="Race Date">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <DatePicker SelectedDateFormat="Short" SelectedDate="{Binding RaceDate}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

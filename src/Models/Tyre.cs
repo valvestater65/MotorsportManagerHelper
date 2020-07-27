@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Media.Animation;
 
 namespace MotorsportManagerHelper.src.Models
 {
-    public class Driver
+    public class Tyre
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
-        public double TyreConsumptionFactor { get; set; }
+        public string ImagePath { get; set; }
+        public double CliffPercentage { get; set; }
+        public bool Slick { get; set; }
     }
 }

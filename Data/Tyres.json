@@ -1,0 +1,45 @@
+[
+  {
+    "Name": "UltraSoft",
+    "ImagePath": null,
+    "CliffPercentage": "0.20",
+    "Slick": "true"
+  },
+  {
+    "Name": "SuperSoft",
+    "ImagePath": null,
+    "CliffPercentage": "0.15",
+    "Slick": "true"
+  },
+  {
+    "Name": "Soft",
+    "ImagePath": null,
+    "CliffPercentage": "0.10",
+    "Slick": "true"
+  },
+  {
+    "Name": "Medium",
+    "ImagePath": null,
+    "CliffPercentage": "0.05",
+    "Slick": "true"
+  },
+  {
+    "Name": "Hard",
+    "ImagePath": null,
+    "CliffPercentage": "0",
+    "Slick": "true"
+  },
+  {
+    "Name": "Inter",
+    "ImagePath": null,
+    "CliffPercentage": "0",
+    "Slick": "false"
+  },
+  {
+    "Name": "Wet",
+    "ImagePath": null,
+    "CliffPercentage": "0",
+    "Slick": "false"
+  }
+
+]

@@ -36,45 +36,6 @@ namespace MotorsportManagerHelper.ViewModels.Popups
             ChangeRace = new ParameterLessCommand(UpdateRace);
         }
 
-        private void InitializeExistingRaces()
-        {
-            ExistingRaces = new ObservableCollection<Race>
-            {
-                new Race{
-                    Track = new Track{
-                        Id = Guid.NewGuid(),
-                        Layout = "A",
-                        Name = "Spa"
-                    },
-                    RaceDate = DateTime.UtcNow
-                },
-                new Race{
-                    Track = new Track{
-                        Id = Guid.NewGuid(),
-                        Layout = "A",
-                        Name = "Montmeló"
-                    },
-                    RaceDate = DateTime.UtcNow
-                },
-                new Race{
-                    Track = new Track{
-                        Id = Guid.NewGuid(),
-                        Layout = "B",
-                        Name = "Spa"
-                    },
-                    RaceDate = DateTime.UtcNow
-                },
-                new Race{
-                    Track = new Track{
-                        Id = Guid.NewGuid(),
-                        Layout = "B",
-                        Name = "Montmeló"
-                    },
-                    RaceDate = DateTime.UtcNow
-                }
-
-            };
-        }
         private void SetCurrentRace(Race race)
         {
             CurrentRace = race; 

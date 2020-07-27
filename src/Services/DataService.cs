@@ -15,12 +15,13 @@ namespace MotorsportManagerHelper.src.Services
     {
         private const string RACE_PREFIX = "race_";
         private const string RACE_PATTERN = "race_*";
+        private const string TYRE_PATTERN = "Tyres*";
 
-        private DataFileService<List<Track>> _raceDataFiles;
+        private DataFileService _dataFileService;
 
         public DataService()
         {
-            _raceDataFiles = new DataFileService<List<Track>>();
+            _dataFileService = new DataFileService();
             CheckDataDirectory();
         }
 
@@ -28,7 +29,7 @@ namespace MotorsportManagerHelper.src.Services
         {
             try
             {
-                _raceDataFiles.CreateDataFolder(DefaultSettings.DataDirectory);
+                _dataFileService.CreateDataFolder(DefaultSettings.DataDirectory);
             }
             catch (Exception)
             {
@@ -40,12 +41,17 @@ namespace MotorsportManagerHelper.src.Services
         {
             try
             {
-                return _raceDataFiles.GetLastSavedData(DefaultSettings.DataDirectory, RACE_PATTERN);
+                return _dataFileService.GetLastSavedData<List<Track>>(DefaultSettings.DataDirectory, RACE_PATTERN);
             }
             catch (Exception)
             {
                 return null;
             }
+        }
+
+        public List<Tyre> GetTyreData()
+        {
+           return _dataFileService.GetLastSavedData<List<Tyre>>(DefaultSettings.DataDirectory, TYRE_PATTERN);
         }
 
         public void SaveRaces(List<Track> tracks, bool newfile = false)
@@ -55,7 +61,7 @@ namespace MotorsportManagerHelper.src.Services
 
             if (!newfile)
             {
-                fileName = _raceDataFiles.GetLastFileName(DefaultSettings.DataDirectory, RACE_PATTERN);
+                fileName = _dataFileService.GetLastFileName(DefaultSettings.DataDirectory, RACE_PATTERN);
             }
 
             if (string.IsNullOrEmpty(fileName) || newfile)
@@ -64,7 +70,7 @@ namespace MotorsportManagerHelper.src.Services
             }
             
             var filePath = Path.Combine(DefaultSettings.DataDirectory, fileName);
-            _raceDataFiles.SaveData(filePath, tracks);
+            _dataFileService.SaveData(filePath, tracks);
 
         }
 

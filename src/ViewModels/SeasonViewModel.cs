@@ -164,39 +164,14 @@ namespace MotorsportManagerHelper.src.ViewModels
                     );
                 }
             }
-
-            //AvailableTracks = new ObservableCollection<Track>
-            //{
-            //    new Track{
-            //        Id = Guid.NewGuid(),
-            //        Name = "Montmeló",
-            //        Layout  = "A"
-            //    },
-            //    new Track{
-            //        Id = Guid.NewGuid(),
-            //        Name = "Montmeló",
-            //        Layout  = "B"
-            //    },
-            //    new Track{
-            //        Id = Guid.NewGuid(),
-            //        Name = "Spa",
-            //        Layout  = "A"
-            //    },
-            //    new Track{
-            //        Id = Guid.NewGuid(),
-            //        Name = "Spa",
-            //        Layout  = "B"
-            //    }
-            //};
         }
 
         private void AddRaceToSeason()
         {
             var race = new Race {
                 Id = Guid.NewGuid(),
-                Name = $"{CurrentSelectedTrack.Name} - {CurrentSelectedTrack.Layout}",
-                Track = CurrentSelectedTrack,
-                RaceDate = DateTime.UtcNow
+                Name = CurrentSelectedTrack.Name,
+                Track = CurrentSelectedTrack
             };
 
             CurrentSeason.Races.Add(race);

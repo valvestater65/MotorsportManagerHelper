@@ -12,6 +12,7 @@ namespace MotorsportManagerHelper.src.Models
         public ObservableCollection<Race> Races { get; set; }
         public ObservableCollection<Driver> Drivers { get; set; }
         public Car Car { get; set; }
+        public int Year { get; set; }
 
 
         public Season()

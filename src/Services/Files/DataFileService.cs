@@ -7,14 +7,14 @@ using System.Runtime.CompilerServices;
 
 namespace MotorsportManagerHelper.src.Services.Files
 {
-    public class DataFileService<T> where T : new()
+    public class DataFileService
     {
 
         public DataFileService()
         {
         }
 
-        public T GetData(string filePath)
+        public T GetData<T>(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"{filePath} does not exist");
@@ -35,7 +35,7 @@ namespace MotorsportManagerHelper.src.Services.Files
         }
 
 
-        public T GetLastSavedData(string directoryPath, string pattern)
+        public T GetLastSavedData<T>(string directoryPath, string pattern)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace MotorsportManagerHelper.src.Services.Files
                 if (lastFile == null)
                     throw new Exception("No files found");
 
-                return GetData(lastFile.FullName);
+                return GetData<T>(lastFile.FullName);
             }
             catch (Exception)
             {
@@ -52,7 +52,7 @@ namespace MotorsportManagerHelper.src.Services.Files
             }
         }
 
-        public void SaveData(string filePath, T data)
+        public void SaveData<K>(string filePath, K data)
         {
             if (!Directory.Exists(Path.GetDirectoryName(filePath)))
                 throw new DirectoryNotFoundException("Invalid path");
