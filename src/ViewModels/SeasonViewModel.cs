@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Transactions;
 
@@ -22,8 +23,10 @@ namespace MotorsportManagerHelper.src.ViewModels
         private Track _newAddedTrack;
         private bool _loadLastSessionVisible;
         private bool _showRaceEditor;
+        private bool _showDriverPopup;
         private ApplicationService _currentSession;
-        private DataService _currentDataService; 
+        private DataService _currentDataService;
+        private Driver _currentlySelectedDriver;
         private Race _newAddedRace;
 
         private ParameterLessCommand addSeasonRace;
@@ -33,8 +36,12 @@ namespace MotorsportManagerHelper.src.ViewModels
         private ParameterLessCommand _addNewTrack;
         private ParameterLessCommand _showTrackEditor;
         private ParameterLessCommand _saveTracks;
+        private ParameterLessCommand _closeScreen;
+        private ParameterLessCommand _createDriver;
+        private ParameterLessCommand _deleteDriver;
+        private RelayCommand<int> _displayDriverPopup;
 
-
+        
         public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<string> CategoryTypes { get => categoryTypes; set { categoryTypes = value; OnPropertyChanged(); } }
         public ObservableCollection<Track> AvailableTracks { get => availableTracks; set { availableTracks = value; OnPropertyChanged(); } }
@@ -43,15 +50,21 @@ namespace MotorsportManagerHelper.src.ViewModels
         public Race NewAddedRace { get => _newAddedRace; set { _newAddedRace = value; OnPropertyChanged(); } }
         public bool IsTrackEditorOpen { get => _showRaceEditor; set { _showRaceEditor = value; OnPropertyChanged(); } }
         public Track NewAddedTrack { get => _newAddedTrack; set { _newAddedTrack = value; OnPropertyChanged(); } }
-        
-        public ParameterLessCommand AddSeasonRace { get => addSeasonRace; set { addSeasonRace = value; OnPropertyChanged(); } }
         public bool LoadLastSessionVisible { get => _loadLastSessionVisible; set { _loadLastSessionVisible = value; OnPropertyChanged(); } }
+        public bool ShowDriverPopup { get => _showDriverPopup; set { _showDriverPopup = value; OnPropertyChanged(); } }
+        public Driver CurrentlySelectedDriver { get => _currentlySelectedDriver; set { _currentlySelectedDriver = value; OnPropertyChanged(); } }
+
+        public ParameterLessCommand AddSeasonRace { get => addSeasonRace; set { addSeasonRace = value; OnPropertyChanged(); } }
         public ParameterLessCommand LoadLastSession { get => _loadLastSession; set { _loadLastSession = value; OnPropertyChanged(); } }
         public ParameterLessCommand HidePops { get => _hidePops; set { _hidePops = value; OnPropertyChanged(); } }
         public ParameterLessCommand SaveCurrentSeason { get => _saveSession; set { _saveSession = value; OnPropertyChanged(); } }
         public ParameterLessCommand AddNewTrack { get => _addNewTrack; set { _addNewTrack = value; OnPropertyChanged(); } }
         public ParameterLessCommand ShowTrackEditor { get => _showTrackEditor; set { _showTrackEditor = value; OnPropertyChanged(); } }
         public ParameterLessCommand SaveTracks { get => _saveTracks; set { _saveTracks = value; OnPropertyChanged(); } }
+        public ParameterLessCommand CloseScreen { get => _closeScreen; set { _closeScreen = value; OnPropertyChanged(); } }
+        public ParameterLessCommand CreateDriver { get => _createDriver; set { _createDriver = value; OnPropertyChanged(); } }
+        public ParameterLessCommand DeleteDriver { get => _deleteDriver; set { _deleteDriver = value; OnPropertyChanged(); } }
+        public RelayCommand<int> DisplayDriverPopup { get => _displayDriverPopup; set { _displayDriverPopup = value; OnPropertyChanged(); } }
 
         public SeasonViewModel()
         {
@@ -60,6 +73,7 @@ namespace MotorsportManagerHelper.src.ViewModels
             _newAddedTrack = new Track();
             AvailableTracks = new ObservableCollection<Track>();
             IsTrackEditorOpen = false;
+            CurrentlySelectedDriver = new Driver();
             InitializeCategories();
             InitializeRaces();
             SetCommands();
@@ -75,8 +89,53 @@ namespace MotorsportManagerHelper.src.ViewModels
             AddNewTrack = new ParameterLessCommand(CreateNewTrack);
             ShowTrackEditor = new ParameterLessCommand(OpenTrackEditor);
             SaveTracks = new ParameterLessCommand(SaveTrackList);
+            CloseScreen = new ParameterLessCommand(CloseCurrentScreen);
+            CreateDriver = new ParameterLessCommand(AddNewDriver);
+            DeleteDriver = new ParameterLessCommand(RemoveDriver);
+            DisplayDriverPopup = new RelayCommand<int>(OpenDriverEditor);
         }
 
+
+        private void OpenDriverEditor(int edit)
+        {
+            if (edit == 0)
+            {
+                CurrentlySelectedDriver = new Driver();
+            }
+
+            ShowDriverPopup = true;
+        }
+
+
+        private void AddNewDriver()
+        {
+            if (CurrentSeason != null)
+            {
+                CurrentSeason.Drivers.Add(CurrentlySelectedDriver);
+            }
+        }
+
+        private void RemoveDriver()
+        {
+            if (CurrentlySelectedDriver == null)
+            {
+                return;
+            }
+
+            if (CurrentSeason != null)
+            {
+                if (CurrentSeason.Drivers.Count() > 0)
+                {
+                    CurrentSeason.Drivers.Remove(CurrentlySelectedDriver);
+                }
+            }
+        }
+
+
+        private void CloseCurrentScreen()
+        {
+            _currentSession.Navigation.GoBack();
+        }
 
         private void SaveTrackList()
         {

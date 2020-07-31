@@ -6,6 +6,7 @@ namespace MotorsportManagerHelper.src.Models
 {
     public class Compound
     {
+        public Tyre Tyre { get; set; }
         public string Name { get; set; }
         public int MinLaps { get; set; }
         public int MaxLaps { get; set; }

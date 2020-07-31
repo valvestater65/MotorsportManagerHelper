@@ -1,5 +1,6 @@
 ﻿using MotorsportManagerHelper.src.Models;
 using MotorsportManagerHelper.src.Services;
+using MotorsportManagerHelper.src.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,13 +17,14 @@ namespace MotorsportManagerHelper.src.ViewModels
         private Session raceSession;
         private ObservableCollection<Compound> sessionCompounds;
         private ApplicationService sessionMgr;
-        private DataService _fixDataService; 
+        private DataService _fixDataService;
+        private ParameterLessCommand _getBack;
 
         public ObservableCollection<DriverStints> CalculatedStints { get => calculatedStints; set { calculatedStints = value; OnPropertyChanged(); } }
         public Session RaceSession { get => raceSession; set { raceSession = value; OnPropertyChanged(); } }
         public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<Compound> SessionCompounds { get => sessionCompounds; set { sessionCompounds = value; OnPropertyChanged(); } }
-
+        public ParameterLessCommand GetBack { get => _getBack; set { _getBack = value; OnPropertyChanged(); } }
 
         public StrategyViewModel()
         {
@@ -31,9 +33,15 @@ namespace MotorsportManagerHelper.src.ViewModels
             RaceSession = new Session();
             sessionMgr = ApplicationService.Instance;
             _fixDataService = sessionMgr.FixedDataService;
+            GetBack = new ParameterLessCommand(GoBack);
             InitializeDemoData();
             ValidateSeasonLoaded();
 
+        }
+
+        private void GoBack()
+        {
+            sessionMgr.Navigation.GoBack();
         }
 
         private void ValidateSeasonLoaded()
@@ -152,56 +160,5 @@ namespace MotorsportManagerHelper.src.ViewModels
                 CalculatedStints.Add(driverStints);
             }
         }
-
-        //public void AddStint(Stint newStint)
-        //{
-        //    try
-        //    {
-        //        if (CalculatedStints != null)
-        //        {
-        //            CalculatedStints.Add(newStint);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.Print($"Create Stint failed: {ex.Message}");
-        //        throw;
-        //    }
-        //}
-
-        //public void CreateStint()
-        //{
-        //    try
-        //    {
-        //        if (CalculatedStints != null)
-        //        {
-        //            CalculatedStints.Add(new Stint());
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.Print($"Add Stint failed: {ex.Message}");
-        //        throw;
-        //    }
-        //}
-        //public bool RemoveStint(Guid stintId)
-        //{
-        //    try
-        //    {
-        //        if (CalculatedStints != null)
-        //        {
-        //            return CalculatedStints.Remove(CalculatedStints.Where(x => x.Id == stintId).FirstOrDefault());
-        //        }
-        //        return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.Print($"RemoveStint Failed: {ex.Message}");
-        //        return false;
-        //    }
-        //}
-
-
-
     }
 }

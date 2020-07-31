@@ -19,7 +19,7 @@
             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Race: "/>
-                    <ComboBox Width="100" ItemsSource="{Binding CurrentSeason.Races}">
+                    <ComboBox Width="150" ItemsSource="{Binding CurrentSeason.Races}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding Name}"/>
@@ -30,6 +30,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button Content="Calculate Stints"/>
+                <Button Content="Close" Command="{Binding GetBack}"/>
             </StackPanel>
         </DockPanel>
         <DockPanel Grid.Row="1">
