@@ -21,9 +21,9 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
             <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
-                <Label Content="Season Category: "/>
+                <Label Content="Season Category: " FontWeight="Bold"/>
                 <ComboBox ItemsSource="{Binding CategoryTypes}" SelectedValue="{Binding CurrentSeason.Category}" Width="150" />
-                <Label Content="Season Year: "/>
+                <Label Content="Season Year: " FontWeight="Bold"/>
                 <TextBox Text="{Binding CurrentSeason.Year}" Width="100"/>
                 <Button Margin="5,0,0,0"
                         Command="{Binding SaveCurrentSeason}"
@@ -35,7 +35,7 @@
         </DockPanel>
         <DockPanel Grid.Row="1">
             <StackPanel Orientation="Vertical" Margin="5,5,5,5" DockPanel.Dock="Left">
-                <Label Content="Avilable Tracks"/>
+                <Label Content="Avilable Tracks:" Background="Beige" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <ListView x:Name="lstvExistingRaces" ItemsSource="{Binding AvailableTracks}" SelectedItem="{Binding CurrentSelectedTrack}" Margin="5,5,5,5">
@@ -56,8 +56,8 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-                <Label Content="Season Races" Margin="5,5,5,5"/>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Margin="30,5,5,5">
+                <Label Content="Season Races:" Background="Beige" FontWeight="Bold"/>
                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CurrentSeason.Races}" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Race" Binding="{Binding Name}"/>
@@ -87,7 +87,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" Content="Car definition"/>
+                <Label Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" Content="Car definition: " Background="Beige" FontWeight="Bold"/>
                 <Label  Grid.Column="0" Grid.Row="1" Content="Car Name: " />
                 <TextBox  Grid.Column="1" Grid.Row="1" Text="{Binding CurrentSeason.Car.Name}" Width="150" Height="30"/>
                 <Label Grid.Column="0" Grid.Row="2" Content="Fuel Consumption Factor: " />
@@ -95,8 +95,13 @@
                 <Label Grid.Column="0" Grid.Row="3" Content="Tyre Decay Factor:" />
                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentSeason.Car.TyreDecayFactor}" Width="150" Height="30"/>
             </Grid>
-            <Grid MinWidth="300" Margin="5,5,5,5">
-                <ListView Name="lstvDrivers" ItemsSource="{Binding CurrentSeason.Drivers}" SelectedItem="{Binding CurrentlySelectedDriver}">
+            <Grid MinWidth="300" Margin="35,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Content="Team drivers:" Background="Beige" FontWeight="Bold"/>
+                <ListView Grid.Row="1" Name="lstvDrivers" ItemsSource="{Binding CurrentSeason.Drivers}" SelectedItem="{Binding CurrentlySelectedDriver}">
                     <ListView.View>
                         <GridView AllowsColumnReorder="false">
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Driver Name" Width="100"/>
@@ -108,14 +113,17 @@
                         <ContextMenu>
                             <!-- TODO: We need to convert parameter to boolean!!!  -->
                             <MenuItem Header="Add Driver" Command="{Binding DisplayDriverPopup}" CommandParameter="1"  />
-                            <MenuItem Header="Edit Driver" Command="{Binding DisplayDriverPopup}" CommandParameter="0" />
+                            <MenuItem Header="Edit Driver" Command="{Binding DisplayDriverEdit}" CommandParameter="0" />
                             <MenuItem Header="Remove Driver" Command="{Binding DeleteDriver}"/>
                         </ContextMenu>
                     </ListView.ContextMenu>
                 </ListView>
             </Grid>
         </StackPanel>
-        <Popup Visibility="{Binding LoadLastSessionVisible, Converter={StaticResource visibilityConverter}}" IsOpen="{Binding LoadLastSessionVisible}" PopupAnimation="Slide" Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}">
+        <Popup Visibility="{Binding LoadLastSessionVisible, Converter={StaticResource visibilityConverter}}" 
+               IsOpen="{Binding LoadLastSessionVisible}" PopupAnimation="Slide" Placement="Center" 
+               Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}" 
+               PlacementTarget="{Binding ElementName=page, Mode=OneWay}">
             <Grid Background="AntiqueWhite">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -131,7 +139,9 @@
                 </StackPanel>
             </Grid>
         </Popup>
-        <Popup Visibility="Visible" IsOpen="{Binding IsTrackEditorOpen}" PopupAnimation="Slide" Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}">
+        <Popup Visibility="Visible" IsOpen="{Binding IsTrackEditorOpen}" PopupAnimation="Slide" 
+               Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}"
+               PlacementTarget="{Binding ElementName=page, Mode=OneWay}">
             <Grid Background="AntiqueWhite">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -150,13 +160,14 @@
                     <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
                         <DockPanel Width="200">
                             <Button Content="Save" Width="75" DockPanel.Dock="Left" Command="{Binding AddNewTrack}"/>
-                            <Button Content="Cancel" Width="75" DockPanel.Dock="Right"/>
+                            <Button Content="Cancel" Width="75" DockPanel.Dock="Right" Command="{Binding HidePopUps}"/>
                         </DockPanel>
                     </StackPanel>
                 </StackPanel>
             </Grid>
         </Popup>
-        <Popup Visibility="Visible" IsOpen="{Binding ShowDriverPopup}" PopupAnimation="Slide" Placement="Center" Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}">
+        <Popup Visibility="Visible" IsOpen="{Binding ShowDriverPopup}" PopupAnimation="Slide" Placement="Center" 
+               Width="{Binding ActualWidth, ElementName=page, Mode=OneWay}" >
             <Grid Background="AntiqueWhite">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -179,7 +190,7 @@
                     <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
                         <DockPanel Width="200">
                             <Button Content="Save" Width="75" DockPanel.Dock="Left" Command="{Binding CreateDriver}"/>
-                            <Button Content="Cancel" Width="75" DockPanel.Dock="Right" Command="{Binding xxx}"/>
+                            <Button Content="Cancel" Width="75" DockPanel.Dock="Right" Command="{Binding HidePopUps}"/>
                         </DockPanel>
                     </StackPanel>
                 </StackPanel>

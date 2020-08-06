@@ -1,43 +1,43 @@
 [
   {
     "Name": "UltraSoft",
-    "ImagePath": null,
+    "ImagePath": "UltraSoft.png",
     "CliffPercentage": "0.20",
     "Slick": "true"
   },
   {
     "Name": "SuperSoft",
-    "ImagePath": null,
+    "ImagePath": "SuperSoft.png",
     "CliffPercentage": "0.15",
     "Slick": "true"
   },
   {
     "Name": "Soft",
-    "ImagePath": null,
+    "ImagePath": "Soft.png",
     "CliffPercentage": "0.10",
     "Slick": "true"
   },
   {
     "Name": "Medium",
-    "ImagePath": null,
+    "ImagePath": "Medium.png",
     "CliffPercentage": "0.05",
     "Slick": "true"
   },
   {
     "Name": "Hard",
-    "ImagePath": null,
+    "ImagePath": "Hard.png",
     "CliffPercentage": "0",
     "Slick": "true"
   },
   {
     "Name": "Inter",
-    "ImagePath": null,
+    "ImagePath": "Inter.png",
     "CliffPercentage": "0",
     "Slick": "false"
   },
   {
     "Name": "Wet",
-    "ImagePath": null,
+    "ImagePath": "Wet.png",
     "CliffPercentage": "0",
     "Slick": "false"
   }

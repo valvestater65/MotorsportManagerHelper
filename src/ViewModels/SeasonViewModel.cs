@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -39,8 +40,9 @@ namespace MotorsportManagerHelper.src.ViewModels
         private ParameterLessCommand _closeScreen;
         private ParameterLessCommand _createDriver;
         private ParameterLessCommand _deleteDriver;
-        private RelayCommand<int> _displayDriverPopup;
-
+        private ParameterLessCommand _displayDriverPopup;
+        private ParameterLessCommand _displayDriverEdit;
+        private ParameterLessCommand _hidePopUps;
         
         public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<string> CategoryTypes { get => categoryTypes; set { categoryTypes = value; OnPropertyChanged(); } }
@@ -64,7 +66,9 @@ namespace MotorsportManagerHelper.src.ViewModels
         public ParameterLessCommand CloseScreen { get => _closeScreen; set { _closeScreen = value; OnPropertyChanged(); } }
         public ParameterLessCommand CreateDriver { get => _createDriver; set { _createDriver = value; OnPropertyChanged(); } }
         public ParameterLessCommand DeleteDriver { get => _deleteDriver; set { _deleteDriver = value; OnPropertyChanged(); } }
-        public RelayCommand<int> DisplayDriverPopup { get => _displayDriverPopup; set { _displayDriverPopup = value; OnPropertyChanged(); } }
+        public ParameterLessCommand DisplayDriverPopup { get => _displayDriverPopup; set { _displayDriverPopup = value; OnPropertyChanged(); } }
+        public ParameterLessCommand DisplayDriverEdit { get => _displayDriverEdit; set { _displayDriverEdit = value; OnPropertyChanged(); } }
+        public ParameterLessCommand HidePopUps { get => _hidePopUps; set { _hidePopUps = value; OnPropertyChanged(); } }
 
         public SeasonViewModel()
         {
@@ -84,7 +88,7 @@ namespace MotorsportManagerHelper.src.ViewModels
         {
             AddSeasonRace = new ParameterLessCommand(AddRaceToSeason);
             LoadLastSession = new ParameterLessCommand(LoadLastSavedSession);
-            HidePops = new ParameterLessCommand(ClosePopup);
+            HidePops = new ParameterLessCommand(CloseSeasonPopup);
             SaveCurrentSeason = new ParameterLessCommand(SaveSeason);
             AddNewTrack = new ParameterLessCommand(CreateNewTrack);
             ShowTrackEditor = new ParameterLessCommand(OpenTrackEditor);
@@ -92,27 +96,42 @@ namespace MotorsportManagerHelper.src.ViewModels
             CloseScreen = new ParameterLessCommand(CloseCurrentScreen);
             CreateDriver = new ParameterLessCommand(AddNewDriver);
             DeleteDriver = new ParameterLessCommand(RemoveDriver);
-            DisplayDriverPopup = new RelayCommand<int>(OpenDriverEditor);
+            DisplayDriverPopup = new ParameterLessCommand(OpenDriverEditor);
+            DisplayDriverEdit = new ParameterLessCommand(OpenDriverEditorEdit);
+            HidePopUps = new ParameterLessCommand(ClosePopUps);
         }
 
-
-        private void OpenDriverEditor(int edit)
+        private void OpenDriverEditor()
         {
-            if (edit == 0)
-            {
-                CurrentlySelectedDriver = new Driver();
-            }
-
+            CurrentlySelectedDriver = new Driver();
             ShowDriverPopup = true;
         }
 
+        private void OpenDriverEditorEdit()
+        {
+            ShowDriverPopup = true;
+        }
 
         private void AddNewDriver()
         {
             if (CurrentSeason != null)
             {
-                CurrentSeason.Drivers.Add(CurrentlySelectedDriver);
+                if (CurrentlySelectedDriver.Id != Guid.Empty)
+                {
+                    var previousDriver = CurrentSeason.Drivers.Where(x => x.Id == CurrentlySelectedDriver.Id).FirstOrDefault();
+
+                    previousDriver.Name = CurrentlySelectedDriver.Name;
+                    previousDriver.TeamRole = CurrentlySelectedDriver.TeamRole;
+                    previousDriver.Age = CurrentlySelectedDriver.Age;
+
+                }                        
+                else 
+                {
+                    CurrentlySelectedDriver.Id = Guid.NewGuid();
+                    CurrentSeason.Drivers.Add(CurrentlySelectedDriver);
+                }
             }
+            ShowDriverPopup = false;
         }
 
         private void RemoveDriver()
@@ -187,10 +206,16 @@ namespace MotorsportManagerHelper.src.ViewModels
             LoadLastSessionVisible = false;
         }
 
-        private void ClosePopup()
+        private void CloseSeasonPopup()
         {
             LoadLastSessionVisible = false;
             CurrentSeason = new Season();
+        }
+
+        private void ClosePopUps()
+        {
+            IsTrackEditorOpen = false;
+            ShowDriverPopup = false;
         }
 
 
@@ -227,13 +252,17 @@ namespace MotorsportManagerHelper.src.ViewModels
 
         private void AddRaceToSeason()
         {
-            var race = new Race {
-                Id = Guid.NewGuid(),
-                Name = CurrentSelectedTrack.Name,
-                Track = CurrentSelectedTrack
-            };
+            if (CurrentSelectedTrack != null)
+            {
+                var race = new Race
+                {
+                    Id = Guid.NewGuid(),
+                    Name = CurrentSelectedTrack.Name,
+                    Track = CurrentSelectedTrack
+                };
 
-            CurrentSeason.Races.Add(race);
+                CurrentSeason.Races.Add(race);
+            }
 
         }
 

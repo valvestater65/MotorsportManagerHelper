@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MotorsportManagerHelper.src.ViewModels
@@ -18,13 +20,19 @@ namespace MotorsportManagerHelper.src.ViewModels
         private ObservableCollection<Compound> sessionCompounds;
         private ApplicationService sessionMgr;
         private DataService _fixDataService;
+        private StrategyService _strategyService;
+        private Race _currentRace;
+
         private ParameterLessCommand _getBack;
+        private ParameterLessCommand _getCalculatedStints;
 
         public ObservableCollection<DriverStints> CalculatedStints { get => calculatedStints; set { calculatedStints = value; OnPropertyChanged(); } }
         public Session RaceSession { get => raceSession; set { raceSession = value; OnPropertyChanged(); } }
         public Season CurrentSeason { get => currentSeason; set { currentSeason = value; OnPropertyChanged(); } }
         public ObservableCollection<Compound> SessionCompounds { get => sessionCompounds; set { sessionCompounds = value; OnPropertyChanged(); } }
         public ParameterLessCommand GetBack { get => _getBack; set { _getBack = value; OnPropertyChanged(); } }
+        public Race CurrentRace { get => _currentRace; set { _currentRace = value; OnPropertyChanged(); } }
+        public ParameterLessCommand GetCalculatedStints { get => _getCalculatedStints; set { _getCalculatedStints = value; OnPropertyChanged(); } }
 
         public StrategyViewModel()
         {
@@ -34,6 +42,7 @@ namespace MotorsportManagerHelper.src.ViewModels
             sessionMgr = ApplicationService.Instance;
             _fixDataService = sessionMgr.FixedDataService;
             GetBack = new ParameterLessCommand(GoBack);
+            GetCalculatedStints = new ParameterLessCommand(GenerateStints);
             InitializeDemoData();
             ValidateSeasonLoaded();
 
@@ -131,34 +140,18 @@ namespace MotorsportManagerHelper.src.ViewModels
 
         public void GenerateStints()
         {
-            
-            foreach (var driver in currentSeason.Drivers)
+            if (CurrentRace != null)
             {
-                var driverStints = new DriverStints();
-                driverStints.Driver = driver;
-                //Usually compounds with less Max Laps are the fastest. 
-                //Assumption is one stint per compound. 
-                //We try to generate stints with the fastest compounds possible. 
-                var remainingLaps = raceSession.Laps;
-                foreach (var tyreSet in SessionCompounds.OrderBy(x => x.MaxLaps))
+                if (_strategyService == null)
                 {
-                    if (remainingLaps == 0)
-                        break;
-
-                    var newStint = new Stint
-                    {
-                        Tyre = tyreSet,
-                        Laps = tyreSet.MaxLaps,
-                        Id = Guid.NewGuid(),
-                        Fuel = RaceSession.FuelPerLap * tyreSet.MaxLaps
-                    };
-
-                    remainingLaps -= tyreSet.MaxLaps;
-                    driverStints.Stints.Add(newStint);
+                    _strategyService = new StrategyService(CurrentSeason, CurrentRace);
                 }
 
-                CalculatedStints.Add(driverStints);
+                _strategyService.CalculateRaceStints();
+                CalculatedStints = _strategyService.CurrentStints;
+
             }
+           
         }
     }
 }

@@ -12,5 +12,11 @@ namespace MotorsportManagerHelper.src.Models
         public int RaceLaps { get; set; }
         public List<Session> Sessions { get; set; }
         public List<Compound> Compounds { get; set; }
+
+        public Race()
+        {
+            Sessions = new List<Session>();
+            Compounds = new List<Compound>();
+        }
     }
 }
